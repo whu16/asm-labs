@@ -7,9 +7,9 @@ ssl:
 	openssl x509 -req -days 365 -CA aliyun.root.crt -CAkey aliyun.root.key -set_serial 0 -in aliyun.com.csr -out aliyun.com.crt
 
 install: ssl
-  	curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-  	cp kubectl /usr/local/bin/kubectl
-  	chmod +x /usr/local/bin/kubectl
+	curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+	cp kubectl /usr/local/bin/kubectl
+	chmod +x /usr/local/bin/kubectl
 	kubectl --kubeconfig  ${USER_KUBECONFIG} create -n istio-system secret tls istio-ingressgateway-certs --key ./aliyun.com.key --cert ./aliyun.com.crt
 	kubectl --kubeconfig ${USER_KUBECONFIG} create configmap myexample-nginx-configmap --from-file=nginx.conf=./deploy/myexample-nginx.conf
 	kubectl --kubeconfig ${USER_KUBECONFIG} apply -f ./deploy/backend.yaml
@@ -24,3 +24,6 @@ perf_disable:
 perf_enable:
 	./demo/perf.sh enable
 
+
+perf_test:
+	./demo/perf.sh enable
